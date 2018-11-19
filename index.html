@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+        crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.0.0/dist/bootstrap-validate.js" integrity="sha384-YmuBsjGRLbP6xIXehXIvB6ftbTViDPXx/goUnD/B7EZ8qDE5JVVuBN+Zws8lzmh7"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
+
+    <script src="js/product.js"></script>
+
+    <title>Book Catalog</title>
+</head>
+
+<body onload="init()">
+    <div class="container">
+        <hr/>
+        <h3>Book Catalog</h3>
+        <span class="clearfix"></span>
+
+        <hr/>
+        <button type="button" class="btn btn-primary float-right" id="addBtn" data-toggle="modal" data-target="#AddBookModal">Add Books</button>
+
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="text" id="searchBox" onkeyup="onSearch()" placeholder="Search.... " aria-label="Search">
+        </form>
+
+        <hr/>
+        <div id="userRole">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="admin" name="userRole" class="custom-control-input"checked>
+                <label class="custom-control-label" for="admin">Admin</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="user" name="userRole" class="custom-control-input"  >
+                <label class="custom-control-label" for="user">User</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="vish" name="userRole" class="custom-control-input"  >
+                <label class="custom-control-label" for="vish">vishwaraj</label>
+            </div>
+            <button type="button" id="userRolebtn" class="btn btn-primary" onclick="onUserRole()" >UserRole</button>
+        </div>
+
+        <table id="table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Shipping</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableRow">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Add Books -->
+    <div class="modal fade" id="AddBookModal" tabindex="-1" role="dialog" aria-labelledby="AddBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AddBookModalLabel">Add Books</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="addForm" data-toggle="validator" role="form">
+                        <div class="form-group">
+                            <label for="title" class="control-label">Title</label>
+                            <input type="text" class="form-control" id="title" placeholder="Title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Author</label>
+                            <input type="text" class="form-control" id="author" placeholder="Author" required>
+                        </div>
+                        <div class="form-group ">
+                            <label for="isbn">ISBN</label>
+                            <input type="text" pattern="^[_A-z0-9]{1,}$" maxlength="10" class="form-control" id="isbn" placeholder="ISBN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" placeholder="Description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Rating</label>
+                            <input type="text" class="form-control" id="rating" placeholder="Rating" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Shipping</label>
+                            <input type="text" class="form-control" id="shipper" placeholder="Shipping" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Quantity</label>
+                            <input type="text" class="form-control" id="quantity" placeholder="Quantity" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addProduct()" data-dismiss="modal">Add Book</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Books -->
+    <div class="modal fade" id="EditBookModal" tabindex="-1" role="dialog" aria-labelledby="EditBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EditBookModalLabel">Edit Books</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <input type="hidden" id="hiddentValue">
+                            <label for="title">Title</label>
+                            <input type="text" class="form-control" id="editTitle" placeholder="Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Author</label>
+                            <input type="text" class="form-control" id="editAuthor" placeholder="Author">
+                        </div>
+                        <div class="form-group">
+                            <label for="isbn">ISBN</label>
+                            <input type="text" class="form-control" id="editIsbn" placeholder="ISBN">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Rating</label>
+                            <input type="text" class="form-control" id="editRating" placeholder="Rating">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Shipping</label>
+                            <input type="text" class="form-control" id="editShipping" placeholder="Shipping">
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Quantity</label>
+                            <input type="text" class="form-control" id="editQuantity" placeholder="Quantity">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="onSaveEdit()" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Books -->
+    <div class="modal fade" id="DeleteBookModal" tabindex="-1" role="dialog" aria-labelledby="DeleteBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                        <input type="hidden" id="hiddentValue">
+                    <h5 class="modal-title" id="DeleteBookModalLabel">Delete Books</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" ng-click="onDelete()" data-dismiss="modal">Delete Book</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        bootstrapValidate('#title', 'min:4: Enter at least 5 Characters');
+        bootstrapValidate(['#quantity', '#rating'], 'integer:Please fill out this number field!');
+        bootstrapValidate('#rating', 'max:1:Please dont enter more than 1 characters!');
+        bootstrapValidate(['#title', '#author'], 'required:Please fill out this field!');
+    </script>
+
+
+
+
+</body>
+
+</html>
